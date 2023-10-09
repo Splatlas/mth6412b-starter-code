@@ -256,6 +256,9 @@ function plot_graph(filename::String)
   plot_graph(graph_nodes, graph_edges)
 end
 
-#file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/bays29.tsp"
-#fig = plot_graph1(file)
-#savefig(fig, "/Users/jules/Desktop/test/test_bays29.pdf")
+## Commandes à ne pas prendre en compte, elles servaient à tester le code
+
+#file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
+#read_stsp(file)[2]
+#fig = plot_graph(file)
+#savefig(fig, "/Users/jules/Desktop/test/test_1.pdf")

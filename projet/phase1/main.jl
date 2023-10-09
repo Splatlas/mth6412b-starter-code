@@ -3,7 +3,20 @@ include("edge.jl")
 include("graph.jl")
 include("read_stsp.jl")
 
-filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/bays29.tsp"
+
+"""
+build_graph(filename::String, graph_name::String)
+
+    Crée un objet de type Graph [`Graph`](@ref) à partir d'un fichier .tsp
+
+# Arguments
+- `filename::String`: nom du fichier .tsp (incluant son chemin d'accès) 
+- `graph_name::String`: nom donné au graph créé
+
+# Examples
+    Graphe_1 = build_graph("/Users/Desktop/test.tsp", "MonGraphe")
+    Graphe_2 = build_graph("/Users/Desktop/abcd.tsp", "Graphe_abcd")
+"""
 function build_graph(filename::String, graph_name::String)
     graph_nodes, graph_edges, weights = read_stsp(filename)
     
@@ -29,4 +42,8 @@ function build_graph(filename::String, graph_name::String)
     return Graphe
 end
 
+
+## Commandes à ne pas prendre en compte, elles servaient à tester le code
+
+#filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp"
 #Graphe_test = build_graph(filename,"Graphe_test")
