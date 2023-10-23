@@ -19,9 +19,11 @@ build_graph(filename::String, graph_name::String)
 """
 function build_graph(filename::String, graph_name::String)
     graph_nodes, graph_edges, weights = read_stsp(filename)
+    T = typeof(graph_nodes[1]); #permet d'obtenir le type T
+    Y = typeof(weights[1][1]) #permet d'obtenir le type Y
     
     # On crée un graphe vide : composé d'un nom, d'un vecteur de noeuds (les noeuds sont des vecteurs de Float64 qui représentent les coordonnées dans l'espace du noeud (x,y), et d'un vecteur d'arête)
-    Graphe = Graph(graph_name, Vector{Node{Vector{Float64}}}([]), Vector{Edge{Vector{Float64}}}([]))
+    Graphe = Graph(graph_name, Vector{Node{T}}([]), Vector{Edge{T,Y}}([]))
 
     # Ajouter tous les noeuds 
     for i = 1:length(graph_nodes)
@@ -45,5 +47,6 @@ end
 
 ## Commandes à ne pas prendre en compte, elles servaient à tester le code
 
-#filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp"
-#Graphe_test = build_graph(filename,"Graphe_test")
+filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
+Graphe_test = build_graph(filename,"Graphe_test");
+show(Graphe_test)

@@ -259,6 +259,6 @@ end
 ## Commandes à ne pas prendre en compte, elles servaient à tester le code
 
 #file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
-#read_stsp(file)[2]
+#A = read_stsp(file);
 #fig = plot_graph(file)
 #savefig(fig, "/Users/jules/Desktop/test/test_1.pdf")

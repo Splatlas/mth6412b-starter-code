@@ -1,3 +1,6 @@
+include("node.jl")
+include("edge.jl")
+
 import Base.show
 
 """Type abstrait dont d'autres types de graphes dériveront."""
@@ -7,27 +10,27 @@ abstract type AbstractGraph{T} end
 
 Exemple :
 
-    node1 = Node("Joe", 3.14)
-    node2 = Node("Steve", exp(1))
-    node3 = Node("Jill", 4.12)
-    G = Graph("Ick", [node1, node2, node3])
+    node1 = Node("Joe", 3.14);
+    node2 = Node("Steve", exp(1));
+    node3 = Node("Jill", 4.12);
+    G = Graph("Test", node1, node2, node3)
 
 Attention, tous les noeuds doivent avoir des données de même type.
 """
-mutable struct Graph{T} <: AbstractGraph{T}
+mutable struct Graph{T,Y} <: AbstractGraph{T}
   name::String
   nodes::Vector{Node{T}}
-  edges::Vector{Edge{T}}
+  edges::Vector{Edge{T,Y}}
 end
 
 """Ajoute un noeud au graphe."""
-function add_node!(graph::Graph{T}, node::Node{T}) where T
+function add_node!(graph::Graph{T,Y}, node::Node{T}) where {T,Y}
   push!(graph.nodes, node)
   graph
 end
 
 """Ajoute une arête au graphe."""
-function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
+function add_edge!(graph::Graph{T,Y}, edge::Edge{T,Y}) where {T,Y}
   push!(graph.edges, edge)
   graph
 end
@@ -52,7 +55,7 @@ nb_edges(graph::AbstractGraph) = length(graph.edges)
 
 """Affiche un graphe"""
 function show(graph::Graph)
-  println("Graph ", name(graph), " has ", nb_nodes(graph), " nodes and", nb_edges(graph), " edges")
+  println("Graph ", name(graph), " has ", nb_nodes(graph), " nodes and ", nb_edges(graph), " edges")
   for node in nodes(graph)
     show(node)
   end
