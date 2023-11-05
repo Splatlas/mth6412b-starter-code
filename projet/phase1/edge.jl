@@ -33,3 +33,7 @@ weight(edge::AbstractEdge) = edge.weight
 function show(edge::AbstractEdge)
   println("Edge : ", name(edge.node_1), " ,", name(edge.node_2), ", weight: ", weight(edge))
 end
+
+import Base.isless, Base.==
+isless(a1::Edge, a2::Edge) = a1.weight < a2.weight
+==(a1::Edge, a2::Edge) = a1.weight == a2.weight
