@@ -5,26 +5,27 @@ include("../phase1/graph.jl")
 
 abstract type AbstractConnectedComponent{T} end
 
-# Une composante connexe n'est qu'un ensemble de noeuds qui seront stockés dans les clés. 
-# L'utilisation des valeurs du dictionnaire servira pour les heuristiques
+
+""" Type de composante connexe (CC) : dictionnaire où l'ensemble des noeuds correspond à l'ensemble des clés
+L'utilisation des valeurs du dictionnaire servira pour d'autres cas (orienté?) """
 mutable struct ConnectedComponent{T} <: AbstractConnectedComponent{T}
   nodes::Dict{Node{T}, Node{T}}
 end
 
 
-"""Vide une composante connexe de ses noeuds"""
+"""Vide une CC de ses noeuds"""
 function empty!(CC::AbstractConnectedComponent{T}) where{T}
   CC.nodes = Dict{Node{T}, Node{T}}()  # remplace le dictionnaire de la CC par un dictionnaire vide
   CC
 end
 
-"""Prend un graphe G et renvoie un vecteur V contenant l'ensemble des composantes connexes initiales.
-V contient des composantes connexes de taille 1 noeud"""
+"""Prend un graphe G et renvoie un vecteur V contenant l'ensemble des CC initiales (unitaires).
+V contient des CC de taille unitaire = 1 noeud"""
 function all_nodes_as_CC(g::Graph{T}) where T
   V = Vector{ConnectedComponent{T}}()
   for k in g.nodes
     d = Dict{Node{T}, Node{T}}()  
-    d[k] = k                       # un rentre le noeud en clé mais aussi en valeur : pas utile mais c'était un noeud sous la main
+    d[k] = k                       # un rentre le noeud en clé ET en valeur : sans importance mais c'était un noeud sous la main
     CC = ConnectedComponent{T}(d)
     push!(V,CC)
   end
@@ -32,18 +33,7 @@ function all_nodes_as_CC(g::Graph{T}) where T
 end
 
 
-# Les composantes connexes créées à partir d'une fusion de composantes unitaires donne des dictionnaires 
-# dont seules les clés représentent les noeuds de la composante connexe. Les valeurs ne servent a rien 
-# dans cette version de kruskal
-"""Fusionne la composante connexe 2 à la composante connexe 1 via l'arête (hypothèse: node_1 de edge est dans CC1) : """
-function fusion_CC!(CC1::AbstractConnectedComponent{T}, CC2::AbstractConnectedComponent{T}) where {T}       
-  for (k,v) in CC2.nodes                    
-    CC1.nodes[k] = v                       
-  end           
-  CC1
-end
-
-"""Prend en entrée un vecteur de composantes connexes et retourne celle qui contient le noeud"""
+"""Prend en entrée un vecteur de CC et retourne celle qui contient le noeud"""
 function find_CC_where_node(V::Vector{ConnectedComponent{T}},noeud::Node{T}) where{T}
   for CC in V
     if haskey(CC.nodes, noeud)
@@ -53,8 +43,9 @@ function find_CC_where_node(V::Vector{ConnectedComponent{T}},noeud::Node{T}) whe
 end
 
 
-"""Compare deux composantes connexes et return True si c'est les même.
-Dans ce cas de figure, deux dictionnaires sont les mêmes s'ils ont les mêmes clés """
+
+"""Compare deux CC et return True si c'est les même.
+Dans ce cas de figure, deux dictionnaires sont les mêmes s'ils ont les mêmes clés (les valeurs ne servent à rien)"""
 function same_CC(CC1::AbstractConnectedComponent{T},CC2::AbstractConnectedComponent{T}) where{T}
   if length(CC1.nodes) != length(CC2.nodes)
     return false
@@ -68,7 +59,16 @@ function same_CC(CC1::AbstractConnectedComponent{T},CC2::AbstractConnectedCompon
   return true
 end
 
-
+# Les CC créées à partir d'une fusion de CC unitaires donne des dictionnaires 
+# dont seules les clés représentent les noeuds de la CC. Les valeurs ne servent à rien 
+# dans cette version de kruskal
+"""Fusionne la CC2 à la CC1 (hypothèse: node_1 de edge est dans CC1) : """
+function fusion_CC!(CC1::AbstractConnectedComponent{T}, CC2::AbstractConnectedComponent{T}) where {T}       
+  for (k,v) in CC2.nodes                    
+    CC1.nodes[k] = v                       
+  end           
+  CC1
+end
 
 
 function kruskal(g::Graph{T,Y}) where{T,Y}
