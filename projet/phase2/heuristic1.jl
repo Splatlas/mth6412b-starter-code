@@ -1,4 +1,4 @@
-include("./composanteconnexe.jl")
+include("composanteconnexe.jl")
 
 """Type de composante connexe : dictionnaire de couple (clef,valeur) =  (noeud, parent) avec le rang de la composante"""
 mutable struct RankedConnectedComponent{T} <: AbstractConnectedComponent{T}

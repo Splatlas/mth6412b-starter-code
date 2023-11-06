@@ -1,4 +1,4 @@
-include("graph.jl")
+include("../phase1/graph.jl")
 include("composanteconnexe.jl")
 include("heuristic1.jl")
 

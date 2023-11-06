@@ -1,6 +1,6 @@
-include("node.jl")
-include("edge.jl")
-include("graph.jl")
+include("../phase1/node.jl")
+include("../phase1/edge.jl")
+include("../phase1/graph.jl")
 
 
 abstract type AbstractConnectedComponent{T} end
