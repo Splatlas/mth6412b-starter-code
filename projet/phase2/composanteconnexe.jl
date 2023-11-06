@@ -28,29 +28,29 @@ end
 
 
 """Vide une composante connexe de ses noeuds"""
-function empty!(CC::ConnectedComponent{T}) where{T}
+function empty!(CC::AbstractConnectedComponent{T}) where{T}
   CC.nodes = Dict{Node{T}, Node{T}}()
   CC
 end
 
 
-
-  """Fusionne la composante connexe 2 à la composante connexe 1 via l'arête."""
+#quand on fusionne 2 noeuds unique a et b, on va avoir (a-b,b-b) comme dictionnaire ie le dictionnaire contient tjrs un couple (x-x), qui représente la racine
+"""Fusionne la composante connexe 2 à la composante connexe 1 via l'arête."""
 function fusion_CC!(CC1::AbstractConnectedComponent{T}, CC2::AbstractConnectedComponent{T}, edge::Edge{T,Y}) where {T,Y}
-  noeud1,noeud2 = edge.node_1, edge.node_2
-  if haskey(CC1.nodes,noeud1)
-    CC1.nodes[noeud1] = noeud2
+  noeud1,noeud2 = edge.node_1, edge.node_2  # si j'ai CC1 = (a-b, b-b) et CC2 =(c-d,d-d) et que je fusionne sur edge = (a-c)
+  if haskey(CC1.nodes,noeud1)               # a est dans CC1
+    CC1.nodes[noeud1] = noeud2              # CC1 devient (a-c,b-b)
   elseif haskey(CC1.nodes, noeud2)
     CC1.nodes[noeud2] = noeud1
   end
   for (k,v) in CC2.nodes 
-    CC1.nodes[k] = v
-  end
+    CC1.nodes[k] = v                        # CC1 devient (a-c, c-d, b-b, d-d)
+  end             
   CC1
 end
 
 """Prend en entrée un vecteur de composantes connexes et retourne celle qui contient le noeud"""
-function find_CC_with_node(V::Vector{ConnectedComponent{T}},noeud::Node{T}) where{T}
+function find_CC_where_node(V::Vector{ConnectedComponent{T}},noeud::Node{T}) where{T}
   for CC in V
     if haskey(CC.nodes, noeud)
       return CC
@@ -59,7 +59,7 @@ function find_CC_with_node(V::Vector{ConnectedComponent{T}},noeud::Node{T}) wher
 end
 
 
-"""Compare deux composantes connexes et return True si elles sont différentes"""
+"""Compare deux composantes connexes et return True si les clés sont différentes """
 function same_CC(CC1::AbstractConnectedComponent{T},CC2::AbstractConnectedComponent{T}) where{T}
   if length(CC1.nodes) != length(CC2.nodes)
     return false
@@ -80,15 +80,19 @@ function kruskal(g::Graph{T,Y}) where{T,Y}
   V_CC = all_nodes_as_CC(g)
   sorted_edges = sort(g.edges, by=weight)
   selected_edges = Edge{T,Y}[]
+  P = 0
   for edge in sorted_edges
     noeud1, noeud2 = edge.node_1, edge.node_2
-    CC1 = find_CC_with_node(V_CC,noeud1)
-    CC2 = find_CC_with_node(V_CC,noeud2)
+    CC1 = find_CC_where_node(V_CC,noeud1)
+    CC2 = find_CC_where_node(V_CC,noeud2)
     if !same_CC(CC1,CC2)
       push!(selected_edges, edge)
+      P = P + edge.weight
       fusion_CC!(CC1,CC2,edge)
       empty!(CC2)
     end
   end
-  return Graph{T,Y}("Kruskal de $(name(g))", nodes(g), selected_edges)
+  result = Graph{T,Y}("Kruskal de $(g.name)", nodes(g), selected_edges)
+  show(result)
+  return "Le poids total est $P"
 end
