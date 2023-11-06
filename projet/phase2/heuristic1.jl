@@ -1,37 +1,49 @@
 include("composanteconnexe.jl")
 
-"""Type de composante connexe : dictionnaire de couple (clef,valeur) =  (noeud, parent) avec le rang de la composante"""
+""" Type de composante connexe avec rang (RaCC) : 
+- dictionnaire où l'ensemble des noeuds correspond à l'ensemble des clés
+- rank : rang de la RoCC
+"""
 mutable struct RankedConnectedComponent{T} <: AbstractConnectedComponent{T}
   nodes::Dict{Node{T}, Node{T}}
   rank::Int
 end
 
 
+
+""" Permet de définir le rang d'une RaCC c """
 function set_rank!(c::RankedConnectedComponent, r::Int)
     c.rank = r
     c
 end
 
-"""Prend en entrée un vecteur de composantes connexes avec rang et retourne celle qui contient le noeud"""
-function find_RaCC_where_node(V::Vector{RankedConnectedComponent{T}},noeud::Node{T}) where{T}
-    for RaCC in V
-      if haskey(RaCC.nodes, noeud)
-        return RaCC
-      end
-    end
-  end
 
-"""Prend un graphe G et renvoie un vecteur V contenant l'ensemble des composantes connexes initiales (ie l'ensemble des noeuds)"""
+
+"""Prend un graphe G et renvoie un vecteur V contenant l'ensemble des RoCC initiales (unitaires).
+V contient des RoCC de taille unitaire = 1 noeud"""
 function all_nodes_as_RaCC(g::Graph{T,Y}) where{T,Y}
   V = Vector{RankedConnectedComponent{T}}()
   for k in g.nodes
     d = Dict{Node{T}, Node{T}}()
     d[k] = k
-    RaCC = RankedConnectedComponent{T}(d,0)
+    RaCC = RankedConnectedComponent{T}(d,0) # seul changement avec kruskal classique : le rang des RaCC unitaires est initialisé à 0
     push!(V,RaCC)
   end
   return V
 end
+
+
+
+"""Prend en entrée un vecteur de RaCC et retourne celle qui contient le noeud"""
+function find_RaCC_where_node(V::Vector{RankedConnectedComponent{T}},noeud::Node{T}) where{T}
+  for RaCC in V
+    if haskey(RaCC.nodes, noeud)
+      return RaCC
+    end
+  end 
+end
+# find_RaCC_where_node ne diffère pas du kruskal de base
+
 
 function heuristic_1_kruskal(g::Graph{T,Y}) where{T,Y}
   V_RaCC = all_nodes_as_RaCC(g)

@@ -35,7 +35,7 @@ function find_RoCC_where_node(V::Vector{RootedConnectedComponent{T}},noeud::Node
       end
     end
 end
-# find_RoCC_where_node ne change pas
+# find_RoCC_where_node ne diffère pas du kruskal de base
 
 
 

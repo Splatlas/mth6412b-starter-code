@@ -47,6 +47,6 @@ end
 
 ## Commandes à ne pas prendre en compte, elles servaient à tester le code
 
-filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
-Graphe_test = build_graph(filename,"Graphe_test");
-show(Graphe_test)
+#filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
+#Graphe_test = build_graph(filename,"Graphe_test");
+#show(Graphe_test)

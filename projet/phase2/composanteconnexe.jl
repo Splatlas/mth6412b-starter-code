@@ -21,7 +21,7 @@ end
 
 """Prend un graphe G et renvoie un vecteur V contenant l'ensemble des CC initiales (unitaires).
 V contient des CC de taille unitaire = 1 noeud"""
-function all_nodes_as_CC(g::Graph{T}) where T
+function all_nodes_as_CC(g::Graph{T}) where{T}
   V = Vector{ConnectedComponent{T}}()
   for k in g.nodes
     d = Dict{Node{T}, Node{T}}()  
@@ -63,7 +63,7 @@ end
 # dont seules les clés représentent les noeuds de la CC. Les valeurs ne servent à rien 
 # dans cette version de kruskal
 """Fusionne la CC2 à la CC1 (hypothèse: node_1 de edge est dans CC1) : """
-function fusion_CC!(CC1::AbstractConnectedComponent{T}, CC2::AbstractConnectedComponent{T}) where {T}       
+function fusion_CC!(CC1::AbstractConnectedComponent{T}, CC2::AbstractConnectedComponent{T}) where{T}       
   for (k,v) in CC2.nodes                    
     CC1.nodes[k] = v                       
   end           
