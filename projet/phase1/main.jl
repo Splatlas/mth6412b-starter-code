@@ -1,52 +1,22 @@
-include("node.jl")
-include("edge.jl")
 include("graph.jl")
-include("read_stsp.jl")
+include("composanteconnexe.jl")
+include("heuristic1.jl")
 
-
-"""
-build_graph(filename::String, graph_name::String)
-
-    Crée un objet de type Graph [`Graph`](@ref) à partir d'un fichier .tsp
-
-# Arguments
-- `filename::String`: nom du fichier .tsp (incluant son chemin d'accès) 
-- `graph_name::String`: nom donné au graph créé
-
-# Examples
-    Graphe_1 = build_graph("/Users/Desktop/test.tsp", "MonGraphe")
-    Graphe_2 = build_graph("/Users/Desktop/abcd.tsp", "Graphe_abcd")
-"""
-function build_graph(filename::String, graph_name::String)
-    graph_nodes, graph_edges, weights = read_stsp(filename)
-    T = typeof(graph_nodes[1]); #permet d'obtenir le type T
-    Y = typeof(weights[1][1]) #permet d'obtenir le type Y
-    
-    # On crée un graphe vide : composé d'un nom, d'un vecteur de noeuds (les noeuds sont des vecteurs de Float64 qui représentent les coordonnées dans l'espace du noeud (x,y), et d'un vecteur d'arête)
-    Graphe = Graph(graph_name, Vector{Node{T}}([]), Vector{Edge{T,Y}}([]))
-
-    # Ajouter tous les noeuds 
-    for i = 1:length(graph_nodes)
-        noeud = Node(string(i), graph_nodes[i])  #graph_nodes est un dictionnaire : graph_nodes[i] renvoit le vecteur [x,y] du noeud i
-        add_node!(Graphe,noeud)
-    end
-
-    # ajouter toutes les arêtes
-    for i = 1:length(graph_edges)
-        for j = 1:length(graph_edges[i])
-            noeud_depart = Node(string(i), graph_nodes[i]) 
-            noeud_arrivee = Node(string(graph_edges[i][j]), graph_nodes[graph_edges[i][j]]) #graph_edges[i][j] = Int64 est le j-eme noeud auquel le noeud i est lié => on cherche dans le dictionnaire graphe_nodes le noeud numero graph_edges[i][j]
-            weight = weights[i][graph_edges[i][j]] # on cherche donc le poids associée à l'arête reliant le noeud "i" et le noeud "graph_edges[i][j]"
-            arete = Edge(noeud_depart,noeud_arrivee,weight) # on construit l'arête
-            add_edge!(Graphe,arete) # on l'ajoute au graphe
-        end
-    end
-    return Graphe
-end
-
-
-## Commandes à ne pas prendre en compte, elles servaient à tester le code
-
-filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
-Graphe_test = build_graph(filename,"Graphe_test");
-show(Graphe_test)
+a, b, c, d, e, f, g, h, i = Node("a", 1.0), Node("b", 1.0), Node("c", 1.0), Node("d", 1.0), Node("e", 1.0), Node("f", 1.0), Node("g", 1.0), Node("h", 1.0), Node("i", 1.0)
+e1 = Edge(a, b, 4.)
+e2 = Edge(b, c, 8.)
+e3 = Edge(c, d, 7.)
+e4 = Edge(d, e, 9.)
+e5 = Edge(e, f, 10.)
+e6 = Edge(d, f, 14.)
+e7 = Edge(f, c, 4.)
+e8 = Edge(f, g, 2.)
+e9 = Edge(g, i, 6.)
+e10 = Edge(g, h, 1.)
+e11 = Edge(a, h, 8.)
+e12 = Edge(h, i, 7.)
+e13 = Edge(i, c, 2.)
+e14 = Edge(b, h, 11.)
+G_cours = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14])
+show(kruskal(G_cours))
+#show(heuristic_1_kruskal(G_cours))
