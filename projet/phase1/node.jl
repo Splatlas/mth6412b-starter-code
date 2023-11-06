@@ -30,3 +30,6 @@ data(node::AbstractNode) = node.data
 function show(node::AbstractNode)
   println("Node ", name(node), ", data: ", data(node))
 end
+
+import Base.==
+==(a1::Node, a2::Node) = (a1.name == a2.name) && (a1.data == a2.data)

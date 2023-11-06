@@ -1,6 +1,7 @@
 include("../phase1/graph.jl")
 include("composanteconnexe.jl")
 include("heuristic1.jl")
+include("heuristic2.jl")
 
 a, b, c, d, e, f, g, h, i = Node("a", 1.0), Node("b", 1.0), Node("c", 1.0), Node("d", 1.0), Node("e", 1.0), Node("f", 1.0), Node("g", 1.0), Node("h", 1.0), Node("i", 1.0)
 e1 = Edge(a, b, 4.)
@@ -20,3 +21,4 @@ e14 = Edge(b, h, 11.)
 G_cours = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14])
 show(kruskal(G_cours))
 #show(heuristic_1_kruskal(G_cours))
+#show(heuristic_2_kruskal(G_cours))

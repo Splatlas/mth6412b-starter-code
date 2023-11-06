@@ -51,10 +51,9 @@ function heuristic_1_kruskal(g::Graph{T,Y}) where{T,Y}
         println(RaCC1.rank)
       else
         fusion_CC!(RaCC2,RaCC1,edge)
+        empty!(RaCC1)
         if RaCC1.rank == RaCC2.rank
           set_rank!(RaCC2,RaCC2.rank+1)
-          empty!(RaCC1)
-          println(RaCC2.rank)
         end
       end
     end
