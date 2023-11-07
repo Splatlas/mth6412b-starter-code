@@ -81,7 +81,7 @@ function heuristic_2_kruskal(g::Graph{T,Y}) where{T,Y}
         empty!(RoCC2)
       end
     end
-    result = Graph{T,Y}("Kruskal de $(g.name)", nodes(g), selected_edges)
+    result = Graph{T,Y}("Kruskal de $(g.name) par l'heuristique 2", nodes(g), selected_edges)
     show(result)
     return "Le poids total est $P"
   end

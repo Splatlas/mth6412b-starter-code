@@ -45,6 +45,7 @@ end
 # find_RaCC_where_node ne diffère pas du kruskal de base
 
 
+
 function heuristic_1_kruskal(g::Graph{T,Y}) where{T,Y}
   V_RaCC = all_nodes_as_RaCC(g)
   sorted_edges = sort(g.edges, by=weight)
@@ -58,11 +59,11 @@ function heuristic_1_kruskal(g::Graph{T,Y}) where{T,Y}
       push!(selected_edges, edge)
       P = P + edge.weight
       if RaCC1.rank > RaCC2.rank
-        fusion_CC!(RaCC1,RaCC2,edge)
+        fusion_CC!(RaCC1,RaCC2)
         empty!(RaCC2)
         println(RaCC1.rank)
       else
-        fusion_CC!(RaCC2,RaCC1,edge)
+        fusion_CC!(RaCC2,RaCC1)
         empty!(RaCC1)
         if RaCC1.rank == RaCC2.rank
           set_rank!(RaCC2,RaCC2.rank+1)
@@ -70,6 +71,6 @@ function heuristic_1_kruskal(g::Graph{T,Y}) where{T,Y}
       end
     end
   end
-  show(Graph{T,Y}("Kruskal de $(name(g))", nodes(g), selected_edges))
+  show(Graph{T,Y}("Kruskal de $(name(g)) par l'heuristique 1", nodes(g), selected_edges))
   return "le poids total est $P"
 end

@@ -35,7 +35,7 @@ function build_graph(filename::String, graph_name::String)
     for i = 1:length(graph_edges)
         for j = 1:length(graph_edges[i])
             noeud_depart = Node(string(i), graph_nodes[i]) 
-            noeud_arrivee = Node(string(graph_edges[i][j]), graph_nodes[graph_edges[i][j]]) #graph_edges[i][j] = Int64 est le j-eme noeud auquel le noeud i est lié => on cherche dans le dictionnaire graphe_nodes le noeud numero graph_edges[i][j]
+            noeud_arrivee = Node(string(graph_edges[i][j]), graph_nodes[graph_edges[i][j]]) # graph_edges[i][j] = Int64 est le j-eme noeud auquel le noeud i est lié => on cherche dans le dictionnaire graphe_nodes le noeud numero graph_edges[i][j]
             weight = weights[i][graph_edges[i][j]] # on cherche donc le poids associée à l'arête reliant le noeud "i" et le noeud "graph_edges[i][j]"
             arete = Edge(noeud_depart,noeud_arrivee,weight) # on construit l'arête
             add_edge!(Graphe,arete) # on l'ajoute au graphe

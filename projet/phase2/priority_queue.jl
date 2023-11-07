@@ -100,6 +100,19 @@ function popfirst!(q::PriorityQueue)
     highest
 end
 
+"""Retire et renvoie l'élément ayant la plus basse priorité."""
+function poplast!(q::PriorityQueue) 
+    lowest = q.items[1]
+    for item in q.items[2:end]
+        if item < lowest 
+            lowest = item
+        end 
+    end
+    idx = findall(x -> x == lowest, q.items)[1] 
+    deleteat!(q.items, idx)
+    lowest
+end
+
 
 
 
