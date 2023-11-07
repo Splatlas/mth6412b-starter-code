@@ -210,7 +210,7 @@ function read_stsp(filename::String)
   for edge in edges_brut
     if edge_weight_format in ["UPPER_ROW", "LOWER_COL", "UPPER_DIAG_ROW", "LOWER_DIAG_COL"]
       push!(graph_edges[edge[1]], edge[2])   # graph_edges est un vecteur contenant dim vecteurs vide, le edge[1]ième vecteur vide contient la destination
-    else                                     # donc graphe_edges est un vecteur donc l'indice est le départ et la valeur est la destination
+    else                                     # donc graphe_edges est un vecteur dont l'indice est le départ et la valeur est la destination
       push!(graph_edges[edge[2]], edge[1])   # donc le i-eme vecteur (i-eme ligne) correspond au i-eme départ, et il contient toutes les destinations possibles depuis le i-eme départ
     end
   end

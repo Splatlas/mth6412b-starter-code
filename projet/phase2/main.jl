@@ -19,13 +19,13 @@ e11 = Edge(b, c, 8.)
 e12 = Edge(h, i, 7.)
 e13 = Edge(i, c, 2.)
 e14 = Edge(b, h, 11.)
-Graphe_test = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14])
-filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
-#Graphe_test = build_graph(filename,"Graphe_test");
-#show(Graphe_test)
+g = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14])
+filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test2.tsp";
+#g = build_graph(filename,"Graphe_test");
+#show(g)
 
-#show(kruskal(Graphe_test))
-show(heuristic_1_kruskal(Graphe_test))
-#show(heuristic_2_kruskal(Graphe_test))
-#show(prim(Graphe_test))
+show(kruskal(g))
+#show(heuristic_1_kruskal(g))
+#show(heuristic_2_kruskal(g))
+#show(prim(g))
 
