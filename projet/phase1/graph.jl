@@ -63,3 +63,17 @@ function show(graph::Graph)
     show(edge)
   end
 end
+
+
+"""Prend un graph et un noeud en entrée et retourne la liste des voisins de du noeud"""
+function neighbors(graph::Graph, n::Node)
+  voisins = Vector{Node}()
+  for edge in edges(graph)
+    if edge.node_1 == n
+      push!(voisins,edge.node_2)
+    elseif edge.node_2 == n
+      push!(voisins,edge.node_1)
+    end
+  end
+  return voisins
+end

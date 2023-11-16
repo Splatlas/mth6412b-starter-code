@@ -2,6 +2,7 @@ include("../phase1/node.jl")
 include("../phase1/edge.jl")
 include("../phase1/graph.jl")
 
+import Base.show
 
 abstract type AbstractConnectedComponent{T} end
 
@@ -12,6 +13,22 @@ mutable struct ConnectedComponent{T} <: AbstractConnectedComponent{T}
   nodes::Dict{Node{T}, Node{T}}
 end
 
+"""Constructeur de CC"""
+function ConnectedComponent{T}() where T
+  ConnectedComponent{T}(Dict{Node{T}, Node{T}}())
+end
+
+
+function show(CC::ConnectedComponent)
+  for (key,value) in CC.nodes
+    show(key,value)
+  end
+end
+
+"""Permet d'ajouter un noeud à une CC"""
+function add_node!(cc::ConnectedComponent{T}, node::Node{T}) where T
+  cc.nodes[node] = node
+end
 
 """Vide une CC de ses noeuds"""
 function empty!(CC::AbstractConnectedComponent{T}) where{T}
@@ -24,9 +41,8 @@ V contient des CC de taille unitaire = 1 noeud"""
 function all_nodes_as_CC(g::Graph{T}) where{T}
   V = Vector{ConnectedComponent{T}}()
   for k in g.nodes
-    d = Dict{Node{T}, Node{T}}()  
-    d[k] = k                       # un rentre le noeud en clé ET en valeur : sans importance mais c'était un noeud sous la main
-    CC = ConnectedComponent{T}(d)
+    CC = ConnectedComponent{T}()
+    add_node!(CC,k)
     push!(V,CC)
   end
   return V
@@ -36,11 +52,13 @@ end
 """Prend en entrée un vecteur de CC et retourne celle qui contient le noeud"""
 function find_CC_where_node(V::Vector{ConnectedComponent{T}},noeud::Node{T}) where{T}
   for CC in V
-    if haskey(CC.nodes, noeud)
+    b = noeud in keys(CC.nodes)
+    if b
       return CC
     end
   end
 end
+
 
 
 
@@ -75,7 +93,7 @@ function kruskal(g::Graph{T,Y}) where{T,Y}
   V_CC = all_nodes_as_CC(g)                 # récupère les CC unitaires dans un vecteur
   sorted_edges = sort(g.edges, by=weight)   # donne un vecteur des arêtes de g triées par poids
   selected_edges = Edge{T,Y}[]              # initialise un vecteur vide dans lequel on stocke les arêtes retenues
-  P = 0                                     # stocke le poids total de l'arbre de recouvrement
+  P = 0                                   # stocke le poids total de l'arbre de recouvrement
   for edge in sorted_edges
     noeud1, noeud2 = edge.node_1, edge.node_2
     CC1 = find_CC_where_node(V_CC,noeud1)   # CC1 contient le noeud1

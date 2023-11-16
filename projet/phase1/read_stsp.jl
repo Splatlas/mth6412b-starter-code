@@ -38,6 +38,10 @@ function read_nodes(header::Dict{String}{String}, filename::String)
 
 
   if !(node_coord_type in ["TWOD_COORDS", "THREED_COORDS"]) && !(display_data_type in ["COORDS_DISPLAY", "TWOD_DISPLAY"])
+    taille = parse(Int, header["DIMENSION"])
+    for i in 1:taille
+      nodes[i]=Float64[]
+    end
     return nodes
   end
 
@@ -114,15 +118,15 @@ function read_edges(header::Dict{String}{String}, filename::String)
   flag = false
   
   # Création d'un vecteur weights de dimension dim:dim : weights[i][j] correspond au poids de l'arête reliant le noeud i et j
-  weights = []
-  for i = 1 : dim
-    weight_line = []
-    for j = 1 : dim
-      weight = Int[]
-      push!(weight_line, weight)
-    end
-    push!(weights, weight_line)
-  end
+  #weights = []
+  # for i = 1 : dim
+  #   weight_line = []
+  #   for j = 1 : dim
+  #     weight = Int[]
+  #     push!(weight_line, weight)
+  #   end
+  # end
+  weights = zeros(Int,dim,dim)
 
   for line in eachline(file)
     line = strip(line)
@@ -144,19 +148,20 @@ function read_edges(header::Dict{String}{String}, filename::String)
             weight = parse(Int64, data[j + 1])
             if edge_weight_format in ["UPPER_ROW", "LOWER_COL"]
               edge = (k+1, i+k+2)
-              weights[k+1][i+k+2] = weight #remplissage du poids dans weight en fonction du format de la matrice
+              weights[k+1,i+k+2] = weight #remplissage du poids dans weight en fonction du format de la matrice
             elseif edge_weight_format in ["UPPER_DIAG_ROW", "LOWER_DIAG_COL"]
               edge = (k+1, i+k+1)
-              weights[k+1][i+k+1] = weight
+              weights[k+1,i+k+1] = weight
             elseif edge_weight_format in ["UPPER_COL", "LOWER_ROW"]
               edge = (i+k+2, k+1)
-              weights[i+k+2][k+1] = weight
+              weights[i+k+2,k+1] = weight
             elseif edge_weight_format in ["UPPER_DIAG_COL", "LOWER_DIAG_ROW"]
               edge = (i+1, k+1)
-              weights[i+1][k+1] = weight
+              #@show weight
+              weights[i+1,k+1] = weight
             elseif edge_weight_format == "FULL_MATRIX"
               edge = (k+1, i+1)
-              weights[k+1][i+1] = weight
+              weights[k+1,i+1] = weight
             else
               warn("Unknown format - function read_edges")
             end
@@ -199,8 +204,8 @@ function read_stsp(filename::String)
   println("✓")
 
   Base.print("Reading of edges : ")
-  edges_brut = read_edges(header, filename)[1]
-  weights_brut = read_edges(header, filename)[2] #le poids de l'arête de départ i de destination j est weights_brut[i][j]
+  edges_brut, weights_brut = read_edges(header, filename)
+  #  = read_edges(header, filename)[2] #le poids de l'arête de départ i de destination j est weights_brut[i][j]
   graph_edges = []
   for k = 1 : dim
     edge_list = Int[]

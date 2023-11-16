@@ -9,9 +9,20 @@ mutable struct RankedConnectedComponent{T} <: AbstractConnectedComponent{T}
   rank::Int
 end
 
+"""Constructeur de RaCC : 
+la racine par défaut est : nothing
+le rang par défaut est : 0
+"""
+function RankedConnectedComponent{T}(; rank::Int=0) where T
+  return RankedConnectedComponent{T}(Dict{Node{T}, Node{T}}(), rank)
+end
 
+"""Permet d'ajouter un noeud à une RaCC"""
+function add_node!(cc::RankedConnectedComponent{T}, node::Node{T}) where T
+  cc.nodes[node] = node
+end
 
-""" Permet de définir le rang d'une RaCC c """
+""" Permet de définir le rang d'une RaCC"""
 function set_rank!(c::RankedConnectedComponent, r::Int)
     c.rank = r
     c
@@ -19,14 +30,13 @@ end
 
 
 
-"""Prend un graphe G et renvoie un vecteur V contenant l'ensemble des RoCC initiales (unitaires).
+"""Prend un graphe G et renvoie un vecteur V contenant l'ensemble des RaCC initiales (unitaires).
 V contient des RoCC de taille unitaire = 1 noeud"""
 function all_nodes_as_RaCC(g::Graph{T,Y}) where{T,Y}
   V = Vector{RankedConnectedComponent{T}}()
   for k in g.nodes
-    d = Dict{Node{T}, Node{T}}()
-    d[k] = k
-    RaCC = RankedConnectedComponent{T}(d,0) # seul changement avec kruskal classique : le rang des RaCC unitaires est initialisé à 0
+    RaCC = RankedConnectedComponent{T}() # seul changement avec kruskal classique : le rang des RaCC unitaires est initialisé à 0
+    add_node!(RaCC,k)
     push!(V,RaCC)
   end
   return V
@@ -43,6 +53,33 @@ function find_RaCC_where_node(V::Vector{RankedConnectedComponent{T}},noeud::Node
   end 
 end
 # find_RaCC_where_node ne diffère pas du kruskal de base
+
+
+"""Compare deux RaCC et return True si c'est les même.
+Dans ce cas de figure, deux dictionnaires sont les mêmes si ???              """
+function same_RaCC(RaCC1::AbstractConnectedComponent{T},RaCC2::AbstractConnectedComponent{T}) where{T}
+  if length(RaCC1.nodes) != length(RaCC2.nodes)
+    return false
+  else
+    for noeud in keys(RaCC1.nodes)
+      if !haskey(RaCC2.nodes, noeud)
+        return false
+      end
+    end
+  end
+  return true
+end
+
+# Les CC créées à partir d'une fusion de CC unitaires donne des dictionnaires 
+# dont seules les clés représentent les noeuds de la CC. Les valeurs ne servent à rien 
+# dans cette version de kruskal
+"""Fusionne la RaCC2 à la RaCC1 (hypothèse: node_1 de edge est dans RaCC1) : """
+function fusion_RaCC!(RaCC1::AbstractConnectedComponent{T}, RaCC2::AbstractConnectedComponent{T}) where{T}       
+  for (k,v) in RaCC2.nodes                    
+    RaCC1.nodes[k] = v                       
+  end           
+  RaCC1
+end
 
 
 
