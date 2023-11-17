@@ -157,7 +157,6 @@ function read_edges(header::Dict{String}{String}, filename::String)
               weights[i+k+2,k+1] = weight
             elseif edge_weight_format in ["UPPER_DIAG_COL", "LOWER_DIAG_ROW"]
               edge = (i+1, k+1)
-              #@show weight
               weights[i+1,k+1] = weight
             elseif edge_weight_format == "FULL_MATRIX"
               edge = (k+1, i+1)

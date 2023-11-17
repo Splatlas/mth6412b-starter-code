@@ -1,7 +1,7 @@
+import Base.push!
+
 """Type abstrait dont d'autres types de files dériveront."""
 abstract type AbstractQueue{T} end
-
-
 
 
 # EN DESSOUS : FILE
@@ -113,6 +113,14 @@ function poplast!(q::PriorityQueue)
     lowest
 end
 
+function Base.iterate(q::PriorityQueue{T}, state=1) where T
+    if state <= length(q.items)
+        item = q.items[state]
+        return (item, state + 1)
+    else
+        return nothing
+    end
+end
 
 
 
@@ -152,16 +160,16 @@ end
 
 ##Tests : 
 
-item1 = PriorityItem(1, 3.14);
-item2 = PriorityItem(4, 2.72);
-item3 = PriorityItem(3, 1.56);
-item4 = PriorityItem(2, 1.56);
-liste_prio = PriorityQueue{PriorityItem}();
-push!(liste_prio,item1);
-push!(liste_prio,item2);
-push!(liste_prio,item3);
-push!(liste_prio,item4);
-show(liste_prio)
+# item1 = PriorityItem(1, 3.14);
+# item2 = PriorityItem(4, 2.72);
+# item3 = PriorityItem(3, 1.56);
+# item4 = PriorityItem(2, 1.56);
+# liste_prio = PriorityQueue{PriorityItem}();
+# push!(liste_prio,item1);
+# push!(liste_prio,item2);
+# push!(liste_prio,item3);
+# push!(liste_prio,item4);
+# show(liste_prio)
 
 
 

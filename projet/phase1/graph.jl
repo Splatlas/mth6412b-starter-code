@@ -77,3 +77,13 @@ function neighbors(graph::Graph, n::Node)
   end
   return voisins
 end
+
+function find_edge(graph::Graph{T,Y}, n1::Node{T}, n2::Node{T}) where {T,Y}
+  for edge in graph.edges
+    if n1 == edge.node_1 && n2 == edge.node_2
+      return edge
+    elseif n1 == edge.node_2 && n2 == edge.node_1
+      return edge
+    end
+  end
+end
