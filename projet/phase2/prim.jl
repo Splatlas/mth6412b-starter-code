@@ -35,19 +35,17 @@ function prim(g::Graph{T,Y},s::Node{T}) where{T,Y}
 
         #modification des min_weight et des arêtes sélectionnées de la pile
         for item in pile
-            prio = item.priority
-            selected_edge = nothing
-            for node in arbre.nodes
-                edge = find_edge(g,node,item.data[1]) 
+            prio = item.priority        # variable qui va servir à stocker la meilleure prio
+            selected_edge = nothing     # variable qui va servir à stocker la meilleure arête
+            for node in arbre.nodes     # pour chaque noeud = item.data[1] dans la file, on regarde s'il a une arête avec les noeuds de l'arbre
+                edge = find_edge(g,node,item.data[1]) # on trouve cette arête (potentiellement nothing)
                 if !(edge == nothing) && edge.weight < prio
                     prio = convert(Int, edge.weight)
                     selected_edge = edge
                 end
             end
-            priority!(item,prio)
-            @show typeof(item.data[2])
-            @show typeof(selected_edge)
-            item.data[2] = selected_edge
+            priority!(item,prio)            # pour l'item, on a sa nouvelle priorité
+            item.data[2] = selected_edge    # pour l'item, on a sa nouvelle meilleure arête
         end
     end
     show(arbre)
