@@ -105,7 +105,8 @@ function kruskal(g::Graph{T,Y}) where{T,Y}
       empty!(CC2)
     end
   end
-  result = Graph{T,Y}("Kruskal de $(g.name)", nodes(g), selected_edges)
-  show(result)
-  return "Le poids total est $P"
+  arbre = Graph{T,Y}("Kruskal de $(g.name)", nodes(g), selected_edges)
+  return arbre
+  #show(arbre)
+  #return "Le poids total est $P"
 end
