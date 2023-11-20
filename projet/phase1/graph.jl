@@ -78,6 +78,7 @@ function neighbors(graph::Graph, n::Node)
   return voisins
 end
 
+""" Prend un graph et deux noeuds en entrée, et renvoie l'arête du graph reliant ces deux noeuds"""
 function find_edge(graph::Graph{T,Y}, n1::Node{T}, n2::Node{T}) where {T,Y}
   for edge in graph.edges
     if n1 == edge.node_1 && n2 == edge.node_2
@@ -86,4 +87,15 @@ function find_edge(graph::Graph{T,Y}, n1::Node{T}, n2::Node{T}) where {T,Y}
       return edge
     end
   end
+end
+
+
+""" Renvoie le poids d'un graph """
+
+function graph_weight(graph::Graph{T,Y}) where {T,Y}
+  P = 0
+  for edge in graph.edges
+    P = P + edge.weight
+  end
+  return P
 end

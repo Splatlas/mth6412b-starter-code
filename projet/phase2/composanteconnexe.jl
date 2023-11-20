@@ -92,21 +92,17 @@ end
 function kruskal(g::Graph{T,Y}) where{T,Y}
   V_CC = all_nodes_as_CC(g)                 # récupère les CC unitaires dans un vecteur
   sorted_edges = sort(g.edges, by=weight)   # donne un vecteur des arêtes de g triées par poids
-  selected_edges = Edge{T,Y}[]              # initialise un vecteur vide dans lequel on stocke les arêtes retenues
-  P = 0                                   # stocke le poids total de l'arbre de recouvrement
+  selected_edges = Edge{T,Y}[]              # initialise un vecteur vide dans lequel on stocke les arêtes retenues                                # stocke le poids total de l'arbre de recouvrement
   for edge in sorted_edges
     noeud1, noeud2 = edge.node_1, edge.node_2
     CC1 = find_CC_where_node(V_CC,noeud1)   # CC1 contient le noeud1
     CC2 = find_CC_where_node(V_CC,noeud2)   # pareil pour 2
     if !same_CC(CC1,CC2)                    # vérifie que les 2 noeuds n'appartiennent pas à la même CC
       push!(selected_edges, edge)           # l'arête est retenue
-      P = P + edge.weight
       fusion_CC!(CC1,CC2)                   # CC2 est intégrée à CC1
       empty!(CC2)
     end
   end
   arbre = Graph{T,Y}("Kruskal de $(g.name)", nodes(g), selected_edges)
   return arbre
-  #show(arbre)
-  #return "Le poids total est $P"
 end
