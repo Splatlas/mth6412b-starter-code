@@ -20,12 +20,12 @@ e11 = Edge(b, c, 8.)
 e12 = Edge(h, i, 7.)
 e13 = Edge(i, c, 2.)
 e14 = Edge(b, h, 11.)
-#g = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14])
+#gr = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14])
 filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/hk48.tsp";
-g = build_graph(filename,"Graphe_test");
+gr = build_graph(filename,"Graphe_test");
 
 
-kru = kruskal(g)
+kru = kruskal(gr)
 @show graph_weight(kru)
-pr = prim(g)
+pr = prim(gr)
 @show graph_weight(pr)
