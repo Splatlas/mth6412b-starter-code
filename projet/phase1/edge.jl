@@ -34,6 +34,15 @@ function show(edge::AbstractEdge)
   println("Edge : ", name(edge.node_1), " ,", name(edge.node_2), ", weight: ", weight(edge))
 end
 
+"""Return true si deux arêtes sont les mêmes"""
+function same_edge(edge1::AbstractEdge,edge2::AbstractEdge)
+  if (edge1.node_1 == edge2.node_1) && (edge1.node_2 == edge2.node_2) && (edge1.weight == edge2.weight)
+    return true
+  else
+    return false
+  end
+end
+
 import Base.isless, Base.==
 isless(a1::Edge, a2::Edge) = a1.weight < a2.weight
 ==(a1::Edge, a2::Edge) = a1.weight == a2.weight

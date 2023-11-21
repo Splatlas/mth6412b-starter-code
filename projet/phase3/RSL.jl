@@ -22,7 +22,6 @@ function depth_first_search(arbre::Graph{T,Y}) where{T,Y}
             dfs!(arbre, node, visited)
         end
     end
-    
     return visited
 end
 
