@@ -238,8 +238,8 @@ function plot_graph(nodes, edges)
   fig = plot(legend=false)
 
   # edge positions
-  for k = 1 : length(edges)
-    for j in edges[k]
+  for k = 1 : length(edges) # k correspond au noeud de départ
+    for j in edges[k]       # j correspond au noeud d'arrivée
       plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
           linewidth=1.5, alpha=0.75, color=:lightgray)
     end
@@ -262,7 +262,7 @@ end
 
 ## Commandes à ne pas prendre en compte, elles servaient à tester le code
 
-#file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test.tsp";
-#A = read_stsp(file);
-#fig = plot_graph(file)
-#savefig(fig, "/Users/jules/Desktop/test/test_1.pdf")
+file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test5.tsp";
+A = read_stsp(file);
+fig = plot_graph(file)
+savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/test_1.pdf")

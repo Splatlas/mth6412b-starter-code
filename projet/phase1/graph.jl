@@ -2,6 +2,7 @@ include("node.jl")
 include("edge.jl")
 
 import Base.show
+import Base.copy
 
 """Type abstrait dont d'autres types de graphes dériveront."""
 abstract type AbstractGraph{T} end
@@ -90,8 +91,7 @@ function find_edge(graph::Graph{T,Y}, n1::Node{T}, n2::Node{T}) where {T,Y}
 end
 
 
-""" Renvoie le poids d'un graph """
-
+""" Renvoie le poids d'un graphe """
 function graph_weight(graph::Graph{T,Y}) where {T,Y}
   P = 0
   for edge in graph.edges
