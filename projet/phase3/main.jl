@@ -41,8 +41,9 @@ gr120 = 6942
 hk48 = 11461
 pa561 = 2763
 swiss42 = 1273
+V_tsp = ["bayg29","bays29","brazil58","brg180","dantzig42","fri26","gr17","gr21","gr24","gr48","gr120","hk48","pa561","swiss42"]
 
-function phase3_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
+function phase3_one_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
 
   filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
   gr = build_graph(filename,"Graphe de $tsp_name");
@@ -57,6 +58,37 @@ function phase3_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
   println("Le poids de $tsp_name par $algo est : $weight")
   println("Le poids minimal est $min_weight")
   println("L'erreur relative est $relative_error")
+end
+
+function phase3_all_result(algorithm::Function=RSL)
+
+  result = zeros(4, length(V_tsp))
+
+  for k = 1:length(V_tsp)
+    tsp_name = V_tsp[k]
+
+    # ajout du nom des fichier à la première ligne de result
+    #result[1,k] = tsp_name
+
+    # ajout du poids minimal des fichier à la deuxième ligne de result
+    min_weight = eval(Symbol(tsp_name))
+    result[2,k] = min_weight
+
+    # ajout du poids du tour des fichier à la troisième ligne de result
+    filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
+    gr = build_graph(filename,"Graphe de $tsp_name");
+    algo = nameof(algorithm)
+    tour = algorithm(gr)
+    weight = graph_weight(tour)
+    result[3,k] = weight
+    
+    # ajout de l'erreur relative du tour des fichier à la quatrième ligne de result
+    relative_error = (weight-min_weight)/min_weight
+    result[4,k] = relative_error
+  end
+
+  return result
+  
 end
 
 #fig = plot_graph(RSL(gr))
