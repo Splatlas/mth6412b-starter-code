@@ -63,7 +63,6 @@ function HK(graph::Graph{T,Y}; algorithm::Function=kruskal
   pi_k = zeros(n)
   Tk = minimum_one_tree(graph_copy, selected_node, algorithm)
   weights = map(edge -> edge.weight, Tk.edges)
-  @show weights
   total_weight = sum(weights)
   tk = 1
 
@@ -81,13 +80,12 @@ function HK(graph::Graph{T,Y}; algorithm::Function=kruskal
     # On met à jour pi_k avec vk
     pi_k .= pi_k .+ tk .* vk
     
-    @show vk
     # On met à jour le poids des arêtes
     for i=1:n
       current_node = graph_copy.nodes[i]
       for e in graph_copy.edges
         if (e.node_1 == current_node || e.node_2 == current_node)
-          e.weight += pi_k[i]
+          e.weight += Int(floor(pi_k[i]))
         end
       end
     end

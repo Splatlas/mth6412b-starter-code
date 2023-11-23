@@ -6,6 +6,7 @@ include("../phase2/composanteconnexe.jl")
 include("../phase2/prim.jl")
 include("../phase3/RSL.jl")
 include("../phase3/HK.jl")
+include("../phase3/plot_graph.jl")
 
 a, b, c, d, e, f, g, h, i = Node("a", 1.0), Node("b", 1.0), Node("c", 1.0), Node("d", 1.0), Node("e", 1.0), Node("f", 1.0), Node("g", 1.0), Node("h", 1.0), Node("i", 1.0)
 e1 = Edge(a, b, 4.)
@@ -25,44 +26,38 @@ e14 = Edge(b, h, 11.)
 e15 = Edge(a, e, 12.)
 e16 = Edge(i, d, 13.)
 #gr = Graph("graphe du cours", [a, b, c, d, e, f, g, h, i], [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16])
-filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/gr48.tsp";
-gr = build_graph(filename,"Graphe_test");
-@show gr.nodes
+
+bayg29 = 1610
+bays29 = 2020
+brazil58 = 25395
+brg180 = 1950
+dantzig42 = 699
+fri26 = 937
+gr17 = 2085
+gr21 = 2707
+gr24 = 1272
+gr48 = 5046
+gr120 = 6942
+hk48 = 11461
+pa561 = 2763
+swiss42 = 1273
+
+function phase3_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
+
+  filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
+  gr = build_graph(filename,"Graphe de $tsp_name");
 
 
-function plot_graph(nodes, edges)
-    fig = plot(legend=false)
-  
-    # edge positions
-  for arete in edges       
-    noeud1 = arete.node_1
-    noeud2 = arete.node_2
-    plot!([noeud1.data[1], noeud2.data[1]], [noeud1.data[2], noeud2.data[2]],
-          linewidth=1.5, alpha=0.75, color=:lightgray)
-  end
+  algo = nameof(algorithm)
+  tour = algorithm(gr)
+  weight = graph_weight(tour)
+  min_weight = eval(Symbol(tsp_name))
 
-  # node positions
-  xys = []
-  for node in nodes
-    push!(xys, node.data)
-  end
-  x = [xy[1] for xy in xys]
-  y = [xy[2] for xy in xys]
-  scatter!(x, y)
-
-  fig
+  relative_error = (weight-min_weight)/min_weight
+  println("Le poids de $tsp_name par $algo est : $weight")
+  println("Le poids minimal est $min_weight")
+  println("L'erreur relative est $relative_error")
 end
-  
-"""Fonction de commodité qui lit un fichier stsp et trace le graphe."""
-function plot_graph(gr::Graph)
-    graph_nodes, graph_edges = gr.nodes, gr.edges
-    plot_graph(graph_nodes, graph_edges)
-end
 
-
-fig = plot_graph(RSL(gr))
-savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/RSL.pdf")
-
-#graph_weight(RSL(gr))
-#onetree(gr,kruskal)
-#HK(gr, maxIter = 20)
+#fig = plot_graph(RSL(gr))
+#savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/RSL_$tsp_name.pdf")
