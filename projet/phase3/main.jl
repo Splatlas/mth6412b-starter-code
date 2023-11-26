@@ -43,6 +43,11 @@ pa561 = 2763
 swiss42 = 1273
 V_tsp = ["bayg29","bays29","brazil58","brg180","dantzig42","fri26","gr17","gr21","gr24","gr48","gr120","hk48","pa561","swiss42"]
 
+"""Fonction qui prend un algorithme de tournée minimale en entrée et le nom d'un fichier tsp et qui affiche:
+- le poids de la tournée calculée par l'algorithme
+- le poids de la tournée minimale du fichier
+- l'écart relatif entre la tournée minimale et la tournée calculée
+"""
 function phase3_one_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
 
   filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
@@ -60,6 +65,12 @@ function phase3_one_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
   println("L'erreur relative est $relative_error")
 end
 
+"""Fonction qui prend un algorithme de tournée minimale en entrée et ressort un tableau avec :
+- première ligne : nom du fichier tsp
+- deuxième ligne : poids de la tournée minimale du fichier
+- troisième ligne : poids de la tournée calculée par l'algorithme
+- quatrième ligne : l'écart relatif entre la tournée minimale et la tournée calculée
+"""
 function phase3_all_result(algorithm::Function=RSL)
 
   result = zeros(4, length(V_tsp))
@@ -93,3 +104,13 @@ end
 
 #fig = plot_graph(RSL(gr))
 #savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/RSL_$tsp_name.pdf")
+
+# tsp_name = "bayg29"
+# filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
+# gr = build_graph(filename,"Graphe de $tsp_name")
+
+
+
+
+
+

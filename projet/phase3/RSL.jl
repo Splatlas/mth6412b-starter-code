@@ -14,7 +14,9 @@ function dfs!(arbre::Graph{T,Y}, current_node::Node{T}, visited::Vector{Node{T}}
     end
 end
 
-# Fonction d'interface pour le parcours en profondeur
+"""Fonction d'interface pour le parcours en profondeur qui retourne :
+- un vecteur qui contient les noeuds dans l'ordre de la visite en profondeur
+"""
 function depth_first_search(arbre::Graph{T,Y}) where{T,Y}
     visited = Vector{Node{T}}()
     for node in arbre.nodes
@@ -25,12 +27,18 @@ function depth_first_search(arbre::Graph{T,Y}) where{T,Y}
     return visited
 end
 
+"""Fonction qui retourne une tournée selon l'algorithme RSL d'un graphe g
+"""
 function RSL(g::Graph{T,Y}) where{T,Y}
     tour = Graph("Tournée RSL de $(g.name)", Vector{Node{T}}([]), Vector{Edge{T,Y}}([]))
+
+    # Calcul du parcours en profondeur 
     v_dfs = depth_first_search(kruskal(g))
+
+    # ajout des noeuds de v_dfs dans le graphe '"tour" ainsi que les arêtes de g reliant ces noeuds
     for k = 1:length(v_dfs)-1
         add_node!(tour,v_dfs[k])
-        arete = find_edge(g,v_dfs[k],v_dfs[k+1])
+        arete = find_edge(g,v_dfs[k],v_dfs[k+1]) 
         add_edge!(tour,arete)
     end
     add_node!(tour,v_dfs[end])
