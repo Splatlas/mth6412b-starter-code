@@ -43,71 +43,57 @@ pa561 = 2763
 swiss42 = 1273
 V_tsp = ["bayg29","bays29","brazil58","brg180","dantzig42","fri26","gr17","gr21","gr24","gr48","gr120","hk48","pa561","swiss42"]
 
-"""Fonction qui prend un algorithme de tournée minimale en entrée et le nom d'un fichier tsp et qui affiche:
+"""Fonction qui prend en entrée :
+- un algorithme de tournée minimale (et l'indice de la racine de départ pour kruskal) 
+- le nom d'un fichier tsp
+La fonction retourne : 
 - le poids de la tournée calculée par l'algorithme
-- le poids de la tournée minimale du fichier
-- l'écart relatif entre la tournée minimale et la tournée calculée
 """
-function phase3_one_result(tsp_name::String="dantzig42",algorithm::Function=RSL)
+function tour_weight(tsp_name::String="dantzig42",indice_racine::Int64=1,algorithm::Function=RSL)
 
   filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
   gr = build_graph(filename,"Graphe de $tsp_name");
-
-
-  algo = nameof(algorithm)
-  tour = algorithm(gr)
-  weight = graph_weight(tour)
-  min_weight = eval(Symbol(tsp_name))
-
-  relative_error = (weight-min_weight)/min_weight
-  println("Le poids de $tsp_name par $algo est : $weight")
-  println("Le poids minimal est $min_weight")
-  println("L'erreur relative est $relative_error")
-end
-
-"""Fonction qui prend un algorithme de tournée minimale en entrée et ressort un tableau avec :
-- première ligne : nom du fichier tsp
-- deuxième ligne : poids de la tournée minimale du fichier
-- troisième ligne : poids de la tournée calculée par l'algorithme
-- quatrième ligne : l'écart relatif entre la tournée minimale et la tournée calculée
-"""
-function phase3_all_result(algorithm::Function=RSL)
-
-  result = zeros(4, length(V_tsp))
-
-  for k = 1:length(V_tsp)
-    tsp_name = V_tsp[k]
-
-    # ajout du nom des fichier à la première ligne de result
-    #result[1,k] = tsp_name
-
-    # ajout du poids minimal des fichier à la deuxième ligne de result
-    min_weight = eval(Symbol(tsp_name))
-    result[2,k] = min_weight
-
-    # ajout du poids du tour des fichier à la troisième ligne de result
-    filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
-    gr = build_graph(filename,"Graphe de $tsp_name");
-    algo = nameof(algorithm)
+  if algorithm == RSL
+    tour = algorithm(gr,indice_racine)
+  elseif algorithm == HK
     tour = algorithm(gr)
-    weight = graph_weight(tour)
-    result[3,k] = weight
-    
-    # ajout de l'erreur relative du tour des fichier à la quatrième ligne de result
-    relative_error = (weight-min_weight)/min_weight
-    result[4,k] = relative_error
   end
-
-  return result
-  
+  weight = graph_weight(tour)
+  return weight
+  min_weight = eval(Symbol(tsp_name))
+  relative_error = (weight-min_weight)/min_weight
 end
 
-#fig = plot_graph(RSL(gr))
-#savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/RSL_$tsp_name.pdf")
+"""Fonction utilitaire pour balayer toutes les racines
+"""
+function min_tour_weight(tsp_name::String="dantzig42",algorithm::Function=RSL)
+  filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
+  gr = build_graph(filename,"Graphe de $tsp_name");
+  min_weight = typemax(Int64)
+  for indice_racine in 1:length(gr.nodes)
+    if algorithm == RSL
+      tour = algorithm(gr,indice_racine)
+    elseif algorithm == HK
+      tour = algorithm(gr)
+    end
+    weight = graph_weight(tour)
+    if weight < min_weight
+      min_weight = weight
+    end
+  end
+  return min_weight
+end
 
-# tsp_name = "bayg29"
+
+
+## SECTION ILLUSTRATION GRAPHIQUE
+
+# tsp_name = "pa561"
 # filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/$tsp_name.tsp";
-# gr = build_graph(filename,"Graphe de $tsp_name")
+# gr = build_graph(filename,"Graphe de $tsp_name");
+# fig = plot_graph(RSL(gr))
+# savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/RSL_$tsp_name.pdf")
+
 
 
 
