@@ -16,9 +16,7 @@ tsp_name = "alaska-railroad"
 filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase4/tsp/instances/$tsp_name.tsp"
 #gr = build_graph_wo_node0(filename,"Graphe de $tsp_name")
 
-
 chemin = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase4/tsp/test"
-
 
 function tour_int(tour::Graph)
   V=[]
@@ -28,7 +26,6 @@ function tour_int(tour::Graph)
   end
   return V
 end
-
 
 tour = RSL(gr)
 #write_tour(chemin, tour_int(tour), graph_weight(tour))
