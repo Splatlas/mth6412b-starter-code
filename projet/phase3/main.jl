@@ -94,8 +94,21 @@ end
 # fig = plot_graph(RSL(gr))
 # savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/RSL_$tsp_name.pdf")
 
+tsp_name = "alaska-railroad.tsp"
+filename = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase4/tsp/instances/$tsp_name.tsp"
 
-
+function new_tour_weight(filename::String,indice_racine::Int64=1,algorithm::Function=RSL)
+  gr = build_graph(filename,"Graphe de $tsp_name");
+  if algorithm == RSL
+    tour = algorithm(gr,indice_racine)
+  elseif algorithm == HK
+    tour = algorithm(gr)
+  end
+  weight = graph_weight(tour)
+  return weight
+  min_weight = eval(Symbol(tsp_name))
+  relative_error = (weight-min_weight)/min_weight
+end
 
 
 
