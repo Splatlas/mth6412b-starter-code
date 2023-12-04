@@ -127,5 +127,5 @@ function HK(graph::Graph{T,Y}; algorithm::Function=kruskal
   weights = map(edge -> edge.weight, Tk.edges)
   total_weight = sum(weights)
 
-  return vk
+  return Tk
 end

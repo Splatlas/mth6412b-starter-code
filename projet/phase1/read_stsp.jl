@@ -148,7 +148,7 @@ function read_edges(header::Dict{String}{String}, filename::String)
             weight = parse(Int64, data[j + 1])
             if edge_weight_format in ["UPPER_ROW", "LOWER_COL"]
               edge = (k+1, i+k+2)
-              weights[k+1,i+k+2] = weight #remplissage du poids dans weight en fonction du format de la matrice
+              weights[i+k+2,k+1] = weight
             elseif edge_weight_format in ["UPPER_DIAG_ROW", "LOWER_DIAG_COL"]
               edge = (k+1, i+k+1)
               weights[k+1,i+k+1] = weight
@@ -262,7 +262,7 @@ end
 
 ## Commandes à ne pas prendre en compte, elles servaient à tester le code
 
-file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test5.tsp";
-A = read_stsp(file);
-fig = plot_graph(file)
-savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/test_1.pdf")
+# file = "/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/instances/stsp/test5.tsp";
+# A = read_stsp(file);
+# fig = plot_graph(file)
+# savefig(fig, "/Users/jules/Desktop/MTH6412B/generated_images/test_1.pdf")
