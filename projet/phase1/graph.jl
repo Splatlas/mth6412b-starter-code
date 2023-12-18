@@ -31,7 +31,8 @@ function add_node!(graph::Graph{T,Y}, node::Node{T}) where {T,Y}
 end
 
 """Ajoute une arête au graphe."""
-function add_edge!(graph::Graph{T,Y}, edge::Edge{T,Y}) where {T,Y}
+function add_edge!(graph::Graph{T,Y}, edge) where {T,Y}
+  (edge == nothing) && return
   push!(graph.edges, edge)
   graph
 end

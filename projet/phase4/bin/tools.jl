@@ -29,7 +29,7 @@ function score_picture(filename::String)
 end
 
 """Write a tour in TSPLIB format."""
-function write_tour(filename::String, tour::Array{Int}, cost::Float32)
+function write_tour(filename::String, tour::Array{Int}, cost::Int64)
 	file = open(filename, "w")
 	length_tour = length(tour)
 	write(file,"NAME : $filename\n")
@@ -60,7 +60,7 @@ function shuffle_picture(input_name::String, output_name::String; view::Bool=fal
 end
 
 """Read a tour file and a shuffle image, and output the image reconstructed using the tour."""
-function reconstruct_picture(tour_filename::String, input_name::String, output_name::String; view::Bool=false)
+function reconstruct_picture(tour_filename::String, input_name::String, output_name::String; view::Bool=true)
 	tour = Int[]
 	file = open(tour_filename, "r")
 	in_tour_section = false
@@ -81,5 +81,7 @@ function reconstruct_picture(tour_filename::String, input_name::String, output_n
 	shuffled_picture = load(input_name)
 	reconstructed_picture = shuffled_picture[:,tour[2:end]]
 	view && imshow(reconstructed_picture)
-	save(output_name, reconstructed_picture)
+	#save(output_name, reconstructed_picture)
 end
+
+
