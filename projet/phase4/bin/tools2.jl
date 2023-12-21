@@ -1,7 +1,7 @@
-include("../phase1/node.jl")
-include("../phase1/edge.jl")
-include("../phase1/graph.jl")
-include("../phase1/read_stsp.jl")
+include("/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase1/node.jl")
+include("/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase1/edge.jl")
+include("/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase1/graph.jl")
+include("/Users/jules/Desktop/MTH6412B/Git/mth6412b-starter-code/projet/phase1/read_stsp.jl")
 
 
 """
