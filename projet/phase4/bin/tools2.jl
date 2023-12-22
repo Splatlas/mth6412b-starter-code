@@ -28,8 +28,6 @@ function build_graph_wo_node0(filename::String, graph_name::String)
 
     nodes = Graphe.nodes
 
-    
-    
     for i = 1:length(graph_edges)
         for j = 1:length(graph_edges[i])
             noeud_depart = nodes[findfirst(node -> node.name == string(i), nodes)]
